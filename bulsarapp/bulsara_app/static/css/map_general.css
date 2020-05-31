@@ -1,0 +1,142 @@
+.tooltip {
+  font-weight: bold;
+  padding: 0.5rem;
+  border: 1px solid silver;
+  color: #222;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px 0px #a6a6a6;
+  opacity: 0.9;
+  position: absolute;
+  font-size: 1.5rem;
+}
+
+.hidden {
+  display: none;
+}
+
+#details, #detalle-provincia, .detalle-lateral {
+  margin-top: 7rem;
+}
+
+.footer {
+    border-top: 1px solid silver;
+    color: #888888;
+    font-size: 1.25rem;
+    text-align: center;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+}
+
+#close-details {
+  color: #8ba28f;
+  text-decoration: none;
+  font-size: 2rem;
+  text-align: right;
+  line-height: 4.5rem;
+}
+#close-details:hover {
+  color: red;
+}
+
+#map {
+  font-size: 0; /* to prevent margin at bottom of map container */
+  border: 1px solid silver;
+  /*background: #E6E6E6;*/
+    
+  /* un violeta */
+  /* background: #493965; */
+  /* un gris: */
+  background: #a2a2a2;
+    
+}
+
+#legend {
+  border: 1px solid silver;
+  border-bottom: 0;
+}
+
+.legend-key path {
+  display: none;
+}
+
+.legend-key text {
+  font-size: 1rem;
+}
+
+.legend-key line {
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+g.features {
+  stroke: #d8d8d8;
+  stroke-width: 0.8;
+}
+
+.YlGnBu .q-missing{fill:rgb(169,164,164)}
+.YlGnBu .q-too-low-value{fill:rgb(247,247,247)}
+
+label {
+  display: inline-block;
+  text-align: right;
+}
+
+.buttons-box{
+    margin-top: 1%;
+}
+
+#cartelito-no-existe {
+    color: firebrick;
+}
+
+#cartelito-no-existe span{
+    font-weight: bold;
+}
+
+/* estilo para un feature cuando el usuario lo selecciona */
+.active{
+    position: absolute;
+    z-index: 99999999999999999999;
+    stroke-width: 0.07rem;
+    stroke: #ffb020;  /* un naranjita */
+    
+}
+
+/* Copiamos el estilo de skeleton para el selector */
+select {
+    margin-bottom: 1.5rem;
+    height: 38px;
+    padding: 6px 10px;
+    background-color: #fff;
+    border: 1px solid #D1D1D1;
+    border-radius: 4px;
+    box-shadow: none;
+    box-sizing: border-box;
+    -webkit-writing-mode: horizontal-tb !important;
+    text-rendering: auto;
+    color: -internal-light-dark-color(black, white);
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+    -webkit-appearance: menulist;
+    box-sizing: border-box;
+    align-items: center;
+    white-space: pre;
+    background-color: -internal-light-dark-color(white, black);
+    cursor: default;
+}
+
+option {
+    font-weight: normal;
+    display: block;
+    white-space: pre;
+    min-height: 1.2em;
+    padding: 0px 2px 1px;
+}
+

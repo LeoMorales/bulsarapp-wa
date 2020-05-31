@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+
+{% block title %}About Bulsarapp{% endblock %}
+
+{% block styles %}
+    {{super()}}
+
+    <!-- Bootstrap iconos -->
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/bootstrap-glyphicons.css')}}">
+
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/about.css')}}">
+    
+
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="page-header">
+        <h1>About</h1>
+    </div>
+    
+    
+    <div class="panel-group" id="accordion">
+        <div class="faqHeader">General</div>
+        
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse-general-1">
+                        Aplication access
+                    </a>
+                </h4>
+                <span class="play"></span>
+            </div>
+            <div id="collapse-general-1" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    It is necessary to have a <strong>user in the database</strong> to access the application due to the exposed information. All the information in this release is fake.
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-general-2">
+                        Where were the last names obtained?
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse-general-2" class="panel-collapse collapse">
+                <div class="panel-body">
+                    The surnames were obtained from the Argentine electoral register corresponding to the year 2015.
+                </div>
+            </div>
+        </div>
+
+        <div class="faqHeader">Indicators</div>
+        
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-indicadores-1">
+                       Unbiased random isonymy (INS)
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse-indicadores-1" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p> 
+                        Isonymy is the occurrence of the same surname in two individuals.
+                    </p>
+                    <p>
+                        According to Relethford (1988) when all the individuals within a population have different last names, the isonymy should be equal to 0.
+                    </p>
+                    <p>
+                        Based on the distribution of the last names in each department or province, the Random Isonymy (INS) was determined, according to Morton (1973).
+                    </p>
+                          
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-indicadores-2">
+                        Fisher's alpha
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse-indicadores-2" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p>
+                        This indicator measures the effective number of surnames in a population. Piazza et al. (1987) used it for the first time to analyze migration rates from the distribution of surnames. High values are observed in expanding populations, where there is a significant flow of immigrants, while low values occur in isolated communities with high gene drift. 
+                    </p>
+                    <p>
+                        In this work, the formula of Barrai et al. (1992) was used.
+                    </p>
+
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-indicadores-3">
+                        Inbreeding estimator
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse-indicadores-3" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p>
+                        The inbreeding coefficient was calculated from a derivation of the Crow and Mange formula, which represents inbreeding as an expression of the isonymy of random unions or unbiased bias.
+                    </p>
+                    
+                    <p>
+                        Inbreeding estimator = INS / 4 
+                    </p>
+
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-indicadores-4">
+                        Index A
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse-indicadores-4" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p>
+                        Indicator A represents the percentage of the population that is the sole bearer of their last name.
+                    </p>
+                    <p>
+                        In the maps, the indicator can take values between 0 and 1, so a value 0.1 represents that 10% of the population of the province or department is a carrier of their last name.
+                    </p>
+                   
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-indicadores-5">
+                        Index B
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse-indicadores-5" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p>
+                        Indicator B the percentage of the population whose last name is included in the 7 most frequent last names of the population
+                    </p>
+                    <p>
+                        In the maps, it can take values between 0 and 1, so a value of 0.1 represents that 10% of the population of the province or department carries one of the 7 most popular surnames.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-indicadores-6">
+                        Kiviat diagram (radar graph)
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse-indicadores-6" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <img src="{{url_for('static', filename='imgs/about__radar_chart.png')}}" alt="radar chart" height="342" width="462">
+                    <p>
+                        Each axis of the graph is normalized between 0 and 1 using the maximum and minimum values of each indicator in the entire data (that is, using the values of each indicator for all provinces).
+                    </p>
+                    <p>
+                        The graph was divided into four parts.
+                    </p>
+                    
+                </div>
+            </div>
+        </div>
+
+     
+        <div class="faqHeader">Distribution</div>
+        
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse-distribucion-1">
+                        Surname used
+                    </a>
+                </h4>
+                <span class="play"></span>
+            </div>
+            <div id="collapse-distribucion-1" class="panel-collapse collapse">
+                <div class="panel-body">
+                    For each person in the register, the <strong>first surname</strong> in his/her family name was used to consult its distribution.
+                </div>
+            </div>
+        </div>
+    
+        
+        
+        <div class="faqHeader">Origin</div>
+        
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-distribucion-2">
+                        Surname labeling
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse-distribucion-2" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p> 
+                        Two reference lists (Monasterio, 2017; Albeck et al, 2017) were used to label last names from the electoral roll, with 65,023 last names already classified. In Argentina the following labels were detected:
+                    </p>
+                    <ul>
+                        <li> AFRICANO </li>
+                        <li> ALEMAN </li>
+                        <li> ANDINO (ARGENTINA) </li>
+                        <li> ARABE </li>
+                        <li> ARMENIO </li>
+                        <li> BELGA </li>
+                        <li> BRITÁNICO </li>
+                        <li> CHINO </li>
+                        <li> COREANO </li>
+                        <li> ESCANDINAVO </li>
+                        <li> ESPAÑOL </li>
+                        <li> ESTE EUROPEO </li>
+                        <li> FRANCES </li>
+                        <li> GERMANICO </li>
+                        <li> GRIEGO </li>
+                        <li> HEBREO </li>
+                        <li> HINDU </li>
+                        <li> HOLANDES </li>
+                        <li> IBERICO </li>
+                        <li> ITALIANO </li>
+                        <li> JAPONES </li>
+                        <li> JUJUY (ARGENTINA) </li>
+                        <li> NOA (ARGENTINA) </li>
+                        <li> PORTUGUES </li>
+                        <li> SUIZOS </li>
+                        <li> SUR (ARGENTINA) </li>
+                        <li> TAILANDIA </li>
+                        <li> TIERRAS BAJAS </li>
+                        <li> VASCO </li>
+                    </ul> 
+                </div>
+            </div>
+        </div>  <!-- end panel -->
+
+    </div> <!-- end accordion -->
+     
+     
+
+
+{% endblock %}

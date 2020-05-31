@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+    Bulsarapp - Indicator of Argentina by departments
+
+{% endblock %}
+
+{% block styles %}
+    {{super()}}
+    <!-- Custom CSS styles -->
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/map_provincias.css')}}">
+
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/sidebar.css')}}">
+
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/filter_box.css')}}">
+
+
+{% endblock %}
+    
+
+{% block page_content %}
+
+    <button class="glyphicon glyphicon-search sidebar-button" id="open-sidebar" title="Open sidebar"></button>
+
+    <div id="sidebar" class="collapsed">
+        <button class="glyphicon glyphicon-chevron-right sidebar-button" id="closer" title="Close sidebar"></button>
+        <div class="sidebar-content">
+            <div class="filter-container">
+                <!-- <select id="select-key" class="three columns"> -->
+                <div class="inner-addon left-addon">
+                    <i class="glyphicon glyphicon-filter"></i>
+                    <input 
+                       type="text"
+                       id="filter-input"
+                       onkeyup="onFilterListKeyUp()" 
+                       placeholder="Enter a department name..."
+                       title="Type in a department name"
+                       class="form-control"
+                    >
+                </div>
+                
+                <ul id="filter-item-list">
+                  <!-- <li><a href="#">Rawson (Chubut)</a></li> -->
+                  
+                </ul>
+            </div> <!-- ./filter-container -->
+        </div> <!-- ./sidebar-content -->
+    </div>
+    
+    
+    <div class="page-header">
+        <h1>Surname information for department</h1>
+    </div>
+
+      
+    <div class="row">
+        <div class="col-md-12">
+            <select id="select-key">
+                <option value="n">Electorate</option>
+                <option value="s">Number of differents surnames</option>
+                <option value="ins">Isonymy</option>
+                <option value="alfa_fisher">Fisher's alpha</option>
+                <option value="consanguinidad">Inbreeding</option>
+                <option value="a">Index A</option>
+                <option value="b" selected="selected">Index B</option>
+            </select>
+        </div>
+    </div>  <!-- end row -->
+    
+    <div class="row">  
+
+        <div class="col-md-8">
+            <h5></h5>
+            <div id="legend">
+                <!-- Legend container -->
+            </div>
+            <div id="map">
+                <!-- Map container -->
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div id="initial" class="detalle-lateral">
+                <h5>Instructions</h5>
+                <ul>
+                    <li>Change the categorized key using the dropdown menu above the map.</li>
+                    <li>Select a department to observe its detail.</li>
+                    <li>Scroll on the map to zoom-in / zoom-out the map.</li>
+                    <li>For information about the indicators go to the tab
+                        <a href="{{ url_for('main.about') }}"  target="_blank">
+                            "About"
+                        </a>.
+                    </li>
+                </ul>
+            </div>
+
+            <div id="details" class="hidden">
+                <!-- Details container -->
+            </div>
+        
+        </div> <!-- end col detalle -->      
+    
+    </div> <!-- end row -->
+      
+
+    <div class="footer">
+        <strong>Data sources</strong>: The indicators were calculated from the 2015 electoral registry.
+        Geographical information was obtained from the <a href="https://www.ign.gob.ar/" target="_blank">
+            National Geographic Institute of Argentina
+        </a>.
+    </div>
+
+    <!-- Mustache template, rendered later to show the details of a feature -->
+    <script id="template" type="x-tmpl-mustache">
+      <div class="row">
+          <div class="col-md-12">
+              <h4> <% departamento_nombre %> </h4>
+              <h5> <% provincia_nombre %> </h5>
+              
+              <table>
+                <tr>
+                    <th>Number of registered:</th>
+                    <td> <% n %> </td>
+                </tr>
+                <tr>
+                    <th>Number of surnames:</th>
+                    <td> <% s %></td>
+                </tr>
+                <tr>
+                    <th>Isonymy:</th>
+                    <td> <% ins %> </td>
+                </tr>
+                <tr>
+                    <th>Inbreeding estimator:</th>
+                    <td> <% consanguinidad %> </td>
+                </tr>
+                <tr>
+                    <th>Fisher's alpha:</th>
+                    <td> <% alfa_fisher %>  </td>
+                </tr>
+                <tr>
+                    <th>Index A:</th>
+                    <td> <% a %>  </td>
+                </tr>
+                <tr>
+                    <th>Index B:</th>
+                    <td> <% b %>  </td>
+                </tr>
+              </table>
+          </div>
+        <div class="col-md-12" id="indicadoresChart-container">
+            <canvas id="indicadoresChart"></canvas>
+        </div>
+        <div class="col-md-12 ir-a-detalle">
+            Go to detail 
+            <a class="glyphicon glyphicon-chevron-right"
+               href="<% link_detalle %>"
+               target="_blank"
+               >
+            </a>
+        </div>
+        
+        <div class="col-md-12">
+            <a class="glyphicon glyphicon-remove-circle" href="#" id="close-details" onclick="hideDetails(); return false;"></a>
+        </div>
+          
+        
+    </div>  <!-- end div row -->
+
+      
+    </script>
+
+    <!-- JS libraries -->
+    <script src="/static/libs/chartjs/chart.js@2.8.0.js"></script>
+
+    <script src="/static/libs/d3/d3.v3.min.js"></script>
+    <script src="/static/libs/mustache/mustache.min.js"></script>
+    <script src="/static/libs/d3/topojson.v1.min.js"></script>
+    
+    <!-- Custom JS code -->
+    <script src="/static/js/map_departamentos.js"></script>
+
+{% endblock %}
+

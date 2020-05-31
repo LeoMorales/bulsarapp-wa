@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+    Bulsarapp - Origin distribution in Argentina by departments
+
+{% endblock %}
+
+{% block styles %}
+    {{super()}}
+
+    <!-- Custom CSS styles -->
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/map_provincias.css')}}">
+
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/tooltip_help.css')}}">
+
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/sidebar.css')}}">
+
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/filter_box.css')}}">
+
+
+{% endblock %}
+    
+
+{% block page_content %}
+
+    <button class="glyphicon glyphicon-search sidebar-button" id="open-sidebar" title="Open sidebar"></button>
+
+    <div id="sidebar" class="collapsed">
+        <button class="glyphicon glyphicon-chevron-right sidebar-button" id="closer" title="Close sidebar"></button>
+        <div class="sidebar-content">
+            <div class="filter-container">
+                <!-- <select id="select-key" class="three columns"> -->
+                <div class="inner-addon left-addon">
+                    <i class="glyphicon glyphicon-filter"></i>
+                    <input 
+                       type="text"
+                       id="filter-input"
+                       onkeyup="APP.filtro.onFilterListKeyUp()" 
+                       placeholder="Enter a department name..."
+                       title="Type in a department name"
+                       class="form-control"
+                    >
+                </div>
+                
+                <ul id="filter-item-list">
+                  <!-- <li><a href="#">Rawson (Chubut)</a></li> -->
+                  
+                </ul>
+            </div> <!-- ./filter-container -->
+        </div> <!-- ./sidebar-content -->
+    </div>
+    
+
+
+    <div class="page-header">
+        <h1 id="map-title"> 
+            Origin distribution by Argentine departments
+        </h1>
+    </div>
+
+    <div class="row">
+        <!-- <select id="select-key" class="three columns"> -->
+        <div class="col-md-12">
+            <select class="custom-select" id="select-key">
+                <!-- se completa dinamicamente -->
+                <!--
+                    <option value='AFRICANO' selected="selected"> Africano </option>
+                    <option value='ALEMAN'> Aleman </option>
+                    ...
+                    <option value='VASCO'> Vasco </option>
+                -->
+            </select>
+        </div>
+        <div class="col-md-12">
+            <!-- Default checked -->
+            <div class="form-check has-tooltip">
+                <input type="checkbox"
+                       class="form-check-input"
+                       id="checkbox-predicted-option" 
+                       value="1"
+                       onclick="APP.toogle_predicted(this)" />
+                <label class="form-check-label"
+                       for="checkbox-predicted-option">
+                    Display tagged by naive-bayes classifier
+                </label>
+                <span class="tooltiptext">
+                    The model identifies and classifies according to the categories:
+                    <ul>
+                        <li> ITALIANO </li>
+                        <li> ESTE EUROPEO </li>
+                        <li> VASCO </li>
+                        <li> JAPONES </li>
+                        <li> FRANCES </li>
+                        <li> ARABE </li>
+                    </ul>
+                    And incorporates the labels:
+                    <ul>
+                        <li> AAR: which groups the labels NOA, ANDINO, JUJUY and SUR </li>
+                        <li> GER-ALE: groups GERMÁNICO y ALEMAN </li>
+                    </ul>
+                </span>
+            </div> <!-- ./form-check -->
+        </div> <!-- ./col-md-12 -->
+    </div> <!-- ./row -->
+
+
+        <div class="row">
+            <div class="col-md-8">
+                <h5></h5>
+                <div id="legend"><!-- Legend container --></div>
+                <div id="map"><!-- Map container --></div>
+            </div>
+            
+            <div class="col-md-4">
+
+                <div id="details" class="hidden">
+                    <!-- Details container -->
+                </div>
+                <div id="initial" class="detalle-lateral">
+                    <h5>Instrucciones</h5>
+                    <ul>
+                        <li>Change the categorized key using the dropdown menu above the map.</li>
+                        <li>Position the cursor over a department to observe its detail..</li>
+                        <li>Scroll over the map to zoom-in / zoom-out the map.</li>
+                        <li>For information about surname labeling, consult the tab <a href="{{ url_for('main.about') }}"  target="_blank">
+                            "About"</a>.
+                        </li>
+                    </ul>
+                </div>
+
+                
+            </div>
+            
+        </div> <!-- ./row -->
+
+        <div class="row ">
+            <svg width="100%" height="44">
+                <g class="YlGnBu" transform="translate(20,20)">
+                    <rect height="13" x="0" width="73.6111111111111" class="q-too-low-value" style="stroke-width: 1px;stroke:rgb(0,0,0);">
+                    </rect>
+                    <text x="80" y="12" font-family="Verdana" font-size="14"> From 0 to 9 people.</text>
+                </g>
+            </svg>
+            
+        </div> <!-- end row -->    
+        
+
+      <div class="footer">
+        <strong>Data sources</strong>: The labeling was applied to the surnames of the Argentine electoral roll of the year 2015. The geographic data was obtained from the <a href="https://github.com/Antena/indicadoresEducativosAR/blob/master/argentina-provincias.topojson" target="_blank">Antenna educational indicators site on github</a>.
+      </div>
+
+    <!-- Mustache template, rendered later to show the details of a feature -->
+    <script id="template" type="x-tmpl-mustache">
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Summary</h4>
+                <table>
+                <% #detalle %>
+                    <tr>
+                      <th><% provincia_nombre %>:</th>
+                      <td> <% cantidad %> </td>
+                    </tr>
+                <% /detalle %>
+                </table>
+
+            </div>
+        </div>
+    </script>
+
+
+    <!-- JS libraries -->
+    <script src="/static/libs/d3/d3.v3.min.js" charset="utf-8"></script>
+    <script src="/static/libs/mustache/mustache.min.js"></script>
+
+    <!-- Custom JS code -->
+    <script src="/static/js/map_distribucion_origenes_departamentos.js"></script>
+
+{% endblock %}
+

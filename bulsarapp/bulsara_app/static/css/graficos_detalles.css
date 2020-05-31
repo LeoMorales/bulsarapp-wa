@@ -1,0 +1,29 @@
+.apellido-bar{
+    /*fill: #dc5281;*/  /* un moradito we*/
+    fill: #d57ea2;
+    stroke-width: 1px;
+    /*stroke: #7A108D;*/
+    stroke: #bc2a66;
+}
+
+.origen-ball{
+    fill: #66FCF1;
+    stroke: #45A29E;
+    stroke-width: 2;
+}
+
+.origen-line{
+    stroke: #45A29E;
+    stroke-width: 9px;
+}
+
+.chart-box-row{
+    border: #1ec0eb2e solid 0px;
+}
+
+.chart-box-1 {
+    border-right: #1ec0eb2e solid 0px;
+}
+.chart-box-3 {
+    border-top: #1ec0eb2e solid 0px;
+}

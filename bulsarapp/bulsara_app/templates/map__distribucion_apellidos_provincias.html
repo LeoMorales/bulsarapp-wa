@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+    Bulsarapp - Contador por provincias
+
+{% endblock %}
+
+{% block styles %}
+    {{super()}}
+    <!-- Custom CSS styles -->
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/map_provincias.css')}}">
+
+    <!-- Custom CSS styles -->
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/styles.css')}}">
+
+{% endblock %}
+    
+
+{% block page_content %}
+
+    <div class="page-header">
+        <h1 id="map-title">
+            Distribución del apellido 
+            <small class="text-muted">
+                <span id="current-surname"></span>
+            </small>
+        </h1>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <label for="apellido-a-buscar">Apellido a buscar:</label>
+            <input class="form-control"
+                   type="text"
+                   id="apellido-a-buscar"
+                   apellido-a-buscar
+                   value='Gonzalez, Vazquez, Rodriguez, Villalba, Gomez, Navarro, Fernandez'
+                   placeholder="Ingrese un apellido">
+            <br>
+            <button id="btn-buscar-apellido"> Buscar muchos </button>
+        </div>
+
+    </div> <!-- end row -->
+
+    <div class="row">
+        <div class="col-md-12 hidden" id="cartelito-no-existe">
+            El apellido <span>XXX</span> no se encontró en el Padrón
+        </div>
+        <div class="col-md-12 hidden" id="barra-de-progreso">
+
+            <div class="progress">
+                <div 
+                   class="progress-bar"
+                   role="progressbar"
+                   style="width: 0%;"
+                   aria-valuenow="0"
+                   aria-valuemin="0"
+                   aria-valuemax="100">
+
+                    0%
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- end row -->
+
+    <div class="row hidden" id="searching-indicator">
+        <div class="col-md-12">
+            <strong>Consultando...</strong>
+            <div class="loader"></div>
+        </div>
+    </div>
+
+    <div class="row" id="initial">
+        <div class="col-md-12">
+            <h5>Instrucciones</h5>
+            <ul>
+               <li>Ingrese un apellido y presione buscar para ver su distribución en el mapa.</li>
+               <li>Para buscar más de un apellido, separar con comas.</li>
+
+            </ul>
+        </div>
+    </div> <!-- end initial -->
+
+    <div class="row hidden" id="mapa-img" style="padding-bottom: 5%">
+        <div class="col-md-8">
+            <h5></h5>
+            <div id="legend">
+                <!-- Legend container -->
+            </div>
+            <div id="map">
+                <!-- Map container -->
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="hidden" id="details">
+                <!-- Resumen provincias -->
+            </div>
+            <div class="hidden" id="detalle-provincia">
+                <!-- Details provincia -->
+            </div> <!-- end row -->
+
+        </div>
+
+    </div> <!-- end row mapa y detalle -->
+
+    <div class="row">
+        <div class="col-md-12 buttons-box hidden">
+            <button id="btn-export-jpg" class="glyphicon glyphicon-export"> JPG</button> 
+            <button id="btn-export-png" class="glyphicon glyphicon-export"> PNG</button> 
+        </div>
+
+    </div> <!-- end row botonera -->
+
+        
+        
+    <div class="footer">
+        <strong>Data sources</strong>: Las ocurrencias fueron obtenidas a partir del padrón electoral del año 2015.
+        La data geográfica se obtuvo del <a href="https://github.com/Antena/indicadoresEducativosAR/blob/master/argentina-provincias.topojson" target="_blank">
+            sitio de Indicadores educativos de Antena en github
+        </a>.
+    </div>
+
+    <!-- Mustache template, rendered later to show the details of a feature -->
+    <script id="template" type="x-tmpl-mustache">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 style="margin-top: 10px;">Resumen </h2>
+                <h3 style="margin-bottom:5px;"><% buscado %></h3>
+                <p>Total: <% total %> (<% porcentaje %>% pob. total)</p>
+                
+                <h3>Por provincias</h3>
+                <table>
+                <% #detalle %>
+                    <tr>
+                      <th><% nombre %>:</th>
+                      <td> <% cantidad %> </td>
+                    </tr>
+                <% /detalle %>
+                </table>
+                
+            </div>
+        </div>
+    </script>
+
+    <!-- Mustache template, rendered later to show the details of a feature -->
+    <script id="template-detalle-provincia" type="x-tmpl-mustache">
+        <div class="row">
+            <div class="col-md-12">
+                <h3> Provincia <% nombre %> </h3>
+                <h2> <% total %> </h2>
+                <table>
+                    <% #detalles_apellidos %>
+                        <tr>
+                          <th> <% apellido %>:</th>
+                          <td> <% cantidad %> </td>
+                        </tr>
+                    <% /detalles_apellidos %>
+                </table>
+            </div>
+            <div class="col-md-12">
+                <a  class="glyphicon glyphicon-remove-circle"
+                    href="#"
+                    id="close-details"
+                    onclick="hideDetailsProvincia(); return false;">
+                </a>
+            </div>
+
+        </div>
+       
+    </script>
+
+    <!-- JS libraries -->
+    <!-- <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> -->
+    <script src="/static/libs/d3/d3.v3.min.js"></script>
+    <script src="/static/libs/mustache/mustache.min.js"></script>
+    <script src="/static/libs/dom-to-image/dom-to-image.min.js"></script>
+    <script src="/static/libs/file-saver/FileSaver.min.js"></script>
+
+    <!-- Custom JS code -->
+    <script src="/static/js/map__contador_apellido_provincias.js"></script>
+
+
+{% endblock %}
+

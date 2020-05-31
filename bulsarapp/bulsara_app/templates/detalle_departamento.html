@@ -1,0 +1,329 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+    Bulsarapp - Department detail
+
+{% endblock %}
+
+{% block styles %}
+    {{super()}}
+
+    <!-- Custom CSS styles -->
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/styles.css')}}">
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/bullet.css')}}">
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/graficos_detalles.css')}}">
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/map_table.css')}}">
+
+    <style> /* CSS del tooltip del chart de indicadores */
+
+        div.tooltip { 
+            position: absolute;     
+            text-align: left;     
+            padding: 1%;       
+            font: 12px sans-serif;    
+            background: white; 
+            border: 1px solid grey;    
+            border-radius: 3px;     
+            pointer-events: none;
+            z-index: 99;
+        }
+
+    </style>
+
+    
+{% endblock %}
+    
+
+{% block page_content %}
+
+    <div class="page-header">
+        <h1> 
+            Department: <span id="departamento-nombre"></span>
+            <small id="provincia-nombre"></small>
+        </h1>
+    </div>
+
+    <div class="row">
+        
+        <div class="col-md-6"> <!-- DIV [ 1, 1] -->
+            
+            <div class="row" id="most-frecuent-export-image">  <!-- apellidos mas frecuentes -->
+                <h2>Most frequents surnames</h2>
+                <div class="col-md-12" id="top-7-surnames-chart">
+                    <!-- ... --->
+                </div>
+                <div class="col-md-10 col-md-offset-1">
+                    <small id="most-frecuent-chart--item-value"
+                           style="margin-left: 5px">
+                        Position the pointer on a rect for detail.
+                    </small>
+                </div>
+
+            </div>
+            <button id="btn-export-most-frecuent-image"
+                    type="button"
+                    class="btn btn-sm glyphicon glyphicon-export"
+                    style="position: absolute; top: 90%; right: 8%; display: none"> <!-- se muestra cuando se carga el grafico -->
+                JPG
+            </button>
+            
+        </div>  <!-- DIV [ 1, 1] -->
+
+        <div class="col-md-6">   <!-- DIV [ 1, 2] -->
+            
+            <div class="row" id="surnames-origin-export-image">
+                <h2>Surname origins</h2>
+                <div class="col-md-12" id="origin-chart">
+                    <!-- ... --->
+                </div>
+                <div class="col-md-10 col-md-offset-2">
+                    <small id="origin-chart--item-value"
+                           style="margin-left: 5px">
+                        Position the pointer on the circle for detail.</small>
+                </div>
+
+            </div>
+            <button id="btn-export-surnames-origin-image"
+                    type="button"
+                    class="btn btn-sm glyphicon glyphicon-export"
+                    style="position: absolute; top: 99%; right: 8%; display:none">
+                JPG
+            </button>
+
+        </div>   <!-- DIV [ 1, 2] -->
+        
+        
+        
+    </div> <!-- end row -->
+
+    
+    <div class="row">
+
+        <div class="col-md-6">
+            <h2>Indicators</h2>
+            <div id="indicadores-bullet-chart-container"
+                 style="margin-top: 4.2%">
+                <!-- ... --->
+            </div>
+            
+            <div class="indicadores-box">
+                <h4>Number of departments: <span class="cantidad-indicadores"></span></h4>
+                <svg width="350" height="25">
+                    <rect width="22" height="22" class="indicator-value"></rect>
+                    <text x="30" y="19" id="indicators-chart-departamento-nombre">Indicator value for the department: X </text>
+                 </svg>
+                <svg width="350" height="25">
+                    <rect width="22" height="22" class="indicator-valor-max"></rect>
+                    <text x="30" y="19" id="indicators-chart-max-text"> Maximum value of the indicator in X </text>
+                 </svg>
+                <svg width="350" height="25">
+                    <rect width="22" height="22" class="indicator-valor-min"></rect>
+                    <text x="30" y="19" id="indicators-chart-min-text"> Minimum value of the indicator </text>
+                 </svg>
+                <svg width="350" height="25">
+                    <rect width="22" height="22" class="indicator-valor-mean"></rect>
+                    <text x="30" y="19" id="indicators-chart-avg-text"> Mean value of the indicator </text>
+                </svg>
+                
+            </div>
+            <div style="text-align:center">
+                <small>
+                    The means, maximums and minimums are obtained using the values of the <span class="cantidad-indicadores-2"><!-- acá se carga la cant departamentos --> </span>  departments of the province.
+                </small>
+            </div>
+            
+        </div>   <!-- DIV [ 2, 1] -->
+
+        <div class="col-md-6">   <!-- DIV [ 2, 2] -->
+          
+            <div id="lasker-export-image"
+                 style="margin-bottom: 2%; padding-bottom: 5%;">
+                
+                <h2>Lasker distance <small>to the departments of the province</small></h2>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <svg width="100%" height="44">
+                            <g transform="translate(20,20)">
+                                <rect height="13"
+                                      x="0"
+                                      width="40"
+                                      style="stroke-width: 1px;fill:#c6a5ff;">
+                                </rect>
+                                <text x="45" y="12" 
+                                      font-family="Verdana" font-size="14"
+                                      id="map__department_name">
+                                </text>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="col-md-6">
+                        <svg width="100%"
+                             height="44"
+                             style="display: none"
+                             id="departement_selected_indicator">
+                            <g transform="translate(20,20)">
+                                <rect height="13"
+                                      x="0"
+                                      width="40"
+                                      style="stroke-width: 3px;stroke:#8557d6; fill: white">
+                                </rect>
+                                <text x="45" y="12" 
+                                      font-family="Verdana" font-size="14"
+                                      id="map__department_target_name">
+                                    Destination department
+                                </text>
+                            </g>
+                        </svg>
+                    </div>
+                </div>  <!-- row -->
+
+                <div class="row">            
+                    <div class="col-md-10 col-xs-8">
+                        <div id="map_lasker">
+                            <!-- Map container -->
+                        </div>  <!-- map_lasker -->
+                    </div>
+
+                    <div class="col-md-2 col-xs-4">
+                        <div id="map_legend">
+                            <!-- Legend container -->
+                        </div>
+                    </div>
+                </div>  <!-- row -->            
+
+
+                <div class="row">
+                    <div class="col-md-12 col-md-offset-1">
+
+                    </div>                
+                </div>  <!-- row -->
+
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3"
+                         style="text-align: center; margin-top:5px padding-left:0px">
+                        <small id="map--lasker-distance-to-department-name">
+                            Position the pointer on a departments for detail.
+                        </small>
+                        <br>
+                        <div id="map--lasker-distance-to-department-value"
+                               style="text-align: center">
+                            .
+                        </div>
+                    </div>
+
+                </div>  <!-- row -->
+
+
+                <div class="row" style="margin-top:17px; text-align:center">
+                    <div class="col-md-2 col-md-offset-1"
+                         style="background-color: #f9f9f9; color:#bc2a66; border: #C5C6C7 solid 1px">
+                        Minimum
+                        <br>
+                        <small id="min-lasker-value"
+                               style="padding: .3rem;">
+                            <!-- min value here -->
+                        </small>
+                    </div>
+                    <div class="col-md-2 col-md-offset-2" 
+                         style="background-color: #d98dac; color:#f9f9f9;">
+                        Average
+                        <br>
+                        <small id="mean-lasker-value"
+                               style="padding: .3rem;">
+                            <!-- mean value here -->
+                        </small>
+                    </div>
+                    <div class="col-md-2 col-md-offset-2"
+                         style="background-color: #bc2a66; color:#f9f9f9;">
+                        Maximum
+                        <br>
+                        <small id="max-lasker-value"
+                               style="padding: .3rem;">
+                            <!-- max value here -->
+                        </small>
+                    </div>
+
+                </div>  <!-- row -->
+            </div>  <!-- lasker image div -->
+
+            <div class="row" style="margin-top:5%; text-align:right">  <!-- botonera -->
+                <div class="col-md-12">
+                    <button id="btn-export-lasker-image"
+                            type="button"
+                            class="btn btn-sm glyphicon glyphicon-export"
+                            style="margin-right: 7%;">
+                        JPG
+                    </button>
+                </div>
+            </div>  <!-- botonera -->
+
+            
+        </div>  <!-- lasker div -->  <!-- DIV [ 2, 2] -->
+
+    </div> 
+
+
+    <!--
+    <div class="row chart-box-row">
+        <div class="col-md-12">
+            <h2>Circuitos</h2>
+        </div>
+        <div class="col-md-6">
+            <h3>Listado <small>ordenado por cant. empadronados</small></h3>
+            <div id="circuit-list-placeholder">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h3>Indicadores <small>sobre todos de circuitos</small></h3>
+            <div id="indicadoresChart-container">
+                <canvas id="indicadoresChart"></canvas>
+            </div>
+
+        </div>
+
+    </div> 
+    -->
+    <div class="footer">
+        <strong>Data sources</strong>: Indicators correspond to mock data. The originals indicators are calculated from the 2015 electoral registry of Argentina.
+    </div>
+
+
+    <!-- Templates -->
+    <!-- Mustache template, rendered later to show the details of a feature -->
+    <script id="template-listado-circuitos" type="x-tmpl-mustache">
+        <table>
+        <% #circuitos %>
+            <tr>
+              <th><% nombre %>:</th>
+              <td> <% empadronados %> </td>
+            </tr>
+        <% /circuitos %>
+        </table>
+    </script>
+
+    <!-- JS libraries -->
+    <script src="/static/libs/mustache/mustache.min.js"></script>
+    <script src="/static/libs/d3/d3.v4.min.js" charset="utf-8"></script>
+
+    <script src="/static/libs/dom-to-image/dom-to-image.min.js"></script>
+    <script src="/static/libs/chartjs/chart.js@2.8.0.js"></script>
+    <script src="/static/libs/file-saver/FileSaver.min.js"></script>
+
+    <!-- Custom JS code -->
+    <!-- 
+    -->
+    <script src="/static/js/bullet.js"></script>
+    <script src="/static/js/gis_layers.js"></script>
+
+    
+    <script src="/static/js/detalle_departamento.js"></script>
+    
+
+{% endblock %}
+

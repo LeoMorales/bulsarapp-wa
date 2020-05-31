@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block styles %}
+    {{super()}}
+    <link href="https://fonts.googleapis.com/css?family=Anton|Dosis&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Bulsarapp - Index{% endblock %}
+
+{% block page_content %}
+
+    <div class="page-header">
+        <h1 style="font-family: 'Dosis', sans-serif;">Bulsarapp</h1>
+    </div>
+    
+    <div class="jumbotron text-justify" style="background-color:#eff3f7">
+    
+        <h2 class="display-4">Surnames in Argentina</h2>
+        <hr class="my-3">
+        <p>
+            Last names are cultural traits that in most societies are spread patri and / or matrilineally through a vertical mechanism comparable to genetic transmission. This leads them to constitute a universal biological and sociocultural variable.
+        </p>
+
+        <hr class="my-4">
+        
+        <p>
+            In this application you will find:
+        </p>
+        <ul>
+            <li>Different indicators calculated from the surnames: </li>
+            <ul>
+                <li><a href="{{ url_for('main.indicadores_por_provincias') }}">By province</a></li>
+                <li>
+                    <a href="{{ url_for('main.indicadores_por_departamentos') }}">By department</a>
+                    <ul>
+                        <li>Department detail</li>
+                    </ul>
+
+                </li>
+            </ul>
+            <li>The distribution of a surname in the Argentine territory:</li>
+            <ul>
+                <li><a href="{{ url_for('main.distribucion_por_provincias') }}">By province</a></li>
+                <li><a href="{{ url_for('main.distribucion_por_departamentos') }}">By department</a></li>
+            </ul>
+            <li>The distribution by origin geo-linguistic of surnames in the Argentine territory:</li>
+            <ul>
+                <li><a href="{{ url_for('main.distribucion_origenes_por_provincias') }}">By province</a></li>
+                <li><a href="{{ url_for('main.distribucion_origenes_por_departamentos') }}">By department</a></li>
+            </ul>
+        </ul>
+        
+        <hr class="my-4">
+        
+        <p>
+            In addition, you can find information about the source of the surnames, the characteristics of the indicators and other questions to consider in the tab.
+            <a href="{{ url_for('main.about') }}">"About"</a>
+        </p>
+
+
+    </div> <!-- end jumbotron -->
+{% endblock %}

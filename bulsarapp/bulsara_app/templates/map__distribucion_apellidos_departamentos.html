@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+    Bulsarapp - Distribution by counties
+
+{% endblock %}
+
+{% block styles %}
+    {{super()}}
+    <!-- Custom CSS styles -->
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/map_provincias.css')}}">
+
+    <!-- Custom CSS styles -->
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/styles.css')}}">
+
+
+    <!-- Sidebar and filter CSS styles -->
+
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/sidebar.css')}}">
+
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/filter_box.css')}}">
+
+
+{% endblock %}
+    
+
+{% block page_content %}
+
+    <button class="glyphicon glyphicon-plus sidebar-button" id="open-sidebar" title="Open sidebar"></button>
+
+    <div id="sidebar" class="collapsed">
+        <button class="glyphicon glyphicon-chevron-right sidebar-button" id="closer" title="Close sidebar"></button>
+        <div class="sidebar-content">
+            <div class="buttons-box hidden">
+
+                <div class="button-container">
+                    <button id="btn-deactivate-map-effects">Disable map effects</button>
+                </div> <!-- end button-container-->
+                <div class="button-container">
+                    <button id="btn-export-jpg" class="glyphicon glyphicon-export"> JPG</button> 
+                    <button id="btn-export-png" class="glyphicon glyphicon-export"> PNG</button> 
+                </div>
+
+            </div> <!-- end button-container -->    
+
+
+            <div class="filter-container">
+                <!-- <select id="select-key" class="three columns"> -->
+                <div class="inner-addon left-addon">
+                    <i class="glyphicon glyphicon-filter"></i>
+                    <input 
+                       type="text"
+                       id="filter-input"
+                       onkeyup="FILTRO.onFilterListKeyUp()" 
+                       placeholder="Enter a county name..."
+                       title="Type in a department name"
+                       class="form-control"
+                    >
+                </div>
+                
+                <ul id="filter-item-list">
+                  <!-- <li><a href="#">Rawson (Chubut)</a></li> -->
+                  
+                </ul>
+            </div> <!-- ./filter-container -->
+        </div> <!-- ./sidebar-content -->
+    </div>
+    
+
+    <div class="page-header">
+        <h1 id="map-title"> 
+            Distribution of the surname <span id="current-surname"></span>
+        </h1>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <label for="apellido-a-buscar">Surname to search:</label>
+            <input class="form-control"
+                   type="text"
+                   id="apellido-a-buscar"
+                   apellido-a-buscar
+                   value='Gonzalez, Vazquez, Rodriguez, Villalba, Gomez, Navarro, Fernandez'
+                   placeholder="Ingrese un apellido">
+            <br>
+            <button id="btn-buscar-apellido"> Search group </button>
+        </div>
+        
+    </div> <!-- end row -->
+
+    <div class="row">
+        <div class="col-md-12 hidden" id="cartelito-no-existe">
+            Surname <span>XXX</span> not found in electoral registry database.
+        </div>
+        <div class="col-md-12 hidden" id="barra-de-progreso">
+
+            <div class="progress">
+                <div 
+                   class="progress-bar"
+                   role="progressbar"
+                   style="width: 0%;"
+                   aria-valuenow="0"
+                   aria-valuemin="0"
+                   aria-valuemax="100">
+
+                    0%
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- end row -->
+
+    <div class="row hidden" id="searching-indicator">
+        <div class="col-md-12">
+            <strong>Searching...</strong>
+            <div class="loader"></div>
+        </div>
+    </div>
+
+    <div class="row" id="initial">
+        <div class="col-md-12">
+            <h4>Instructions</h4>
+            <ul>
+                <li>Enter a surname and press search to see its distribution on the map..</li>
+                <li>To search for more than one surname, separate with commas..</li>
+            </ul>
+        </div>
+    </div> <!-- end initial -->
+
+
+    <div class="row hidden" id="mapa-img" style="padding-bottom: 5%">
+        <div class="col-md-12 col-lg-8" style="overflow: hidden;">
+            <h5></h5>
+            <div id="legend">
+                <!-- Legend container -->
+            </div>
+            <div id="map">
+                <!-- Map container -->
+            </div>
+        </div>
+        <div class="col-md-12 col-lg-4">
+
+            <div class="hidden" id="details">
+                <!-- Details container -->
+            </div>
+            <div class="hidden" id="detalle-provincia">
+                <!-- Detalle provincia -->
+            </div> 
+
+        </div>
+        
+        <div class="col-md-12">
+            <svg width="100%" height="44">
+                <g class="YlGnBu" transform="translate(20,20)">
+                    <rect height="13"
+                          x="0"
+                          width="73.6111111111111"
+                          class="q-too-low-value"
+                          style="stroke-width: 1px;stroke:rgb(0,0,0);">
+                    </rect>
+                    <text x="80" y="12" font-family="Verdana" font-size="14">
+                        From 0 to 9 people.
+                    </text>
+                </g>
+            </svg>
+
+        </div>
+        
+
+    </div> <!-- end row -->
+
+    <div class="footer">
+        <strong>Data sources</strong>: The occurrences were obtained from the 2015 electoral registry.
+The geographic data was obtained from the National Geographic Institute <a href="https://www.ign.gob.ar/" target="_blank"></a>.
+    </div>
+
+    <!-- Mustache template, rendered later to show the details of a feature -->
+    <script id="template" type="x-tmpl-mustache">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 style="margin-top: 10px;">Summary </h2>
+                <h3 style="margin-bottom:5px;"><% searched %></h3>
+                <p>Total: <% total %> (<% porcentaje %>%  total population)</p>
+                
+                <h3>By states (sorted by quantity)</h3>
+                <table>
+                <% #detalle %>
+                    <tr>
+                      <th><% nombre %>:</th>
+                      <td> <% cantidad %> </td>
+                    </tr>
+                <% /detalle %>
+                </table>
+                
+            </div>
+        </div>
+    </script>
+
+    <!-- Mustache template, rendered later to show the details of a feature -->
+    <script id="template-detalle-departamento" type="x-tmpl-mustache">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 style="margin-top: 10px;"><% departamento_nombre %></h3>
+                <h2 style="margin-bottom:5px; margin-top: 5px;"><% provincia_nombre %></h2>
+                <% #total %>
+                    <h3> <% total %> </h3>
+                <% /total %>
+                
+                <table>
+                    <% #detalles_apellidos %>
+                        <tr>
+                          <th> <% apellido %>:</th>
+                          <td> <% cantidad %> </td>
+                        </tr>
+                    <% /detalles_apellidos %>
+                </table>
+                
+            </div>
+            <div class="col-md-12">
+                <a  class="glyphicon glyphicon-remove-circle"
+                    href="#"
+                    id="close-details"
+                    onclick="hideDetailsDepartamento(); return false;">
+                </a>
+            </div>
+
+        </div>
+
+    </script>
+
+    <!-- JS libraries -->
+    <!-- <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> -->
+    <script src="/static/libs/d3/d3.v3.min.js"></script>
+    <script src="/static/libs/mustache/mustache.min.js"></script>
+    <script src="/static/libs/dom-to-image/dom-to-image.min.js"></script>
+    <script src="/static/libs/file-saver/FileSaver.min.js"></script>
+
+    <!-- Custom JS code -->
+    <script src="/static/js/map__contador_apellido_departamentos.js"></script>
+
+
+{% endblock %}
+

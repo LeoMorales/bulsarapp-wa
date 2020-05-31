@@ -1,0 +1,35 @@
+:root {
+  --marker-color: #c1ff2b;
+  --max-bar-color: #2a3b43;
+  --min-bar-color: #9aafb9;
+  --mean-bar-color: #45A29E;
+}
+
+.bullet { font: 10px sans-serif; }
+.bullet .marker { 
+    stroke: var(--marker-color);
+    fill: white;
+    stroke-linecap: round;
+    stroke-width: 5px;
+}
+.bullet .tick line { stroke: #666; stroke-width: .5px; }
+.bullet .range.s0 { fill: var(--max-bar-color); }
+.bullet .range.s1 { fill: var(--min-bar-color); }
+.bullet .range.s2 { fill: #ddd; }
+.bullet .measure.s0 { fill: var(--mean-bar-color); }  /* un uva we*/
+.bullet .title { font-size: 14px; font-weight: bold; }
+.bullet .subtitle { fill: #999; }
+
+.indicator-valor-max{ fill: var(--max-bar-color); }
+.indicator-valor-min{ fill: var(--min-bar-color); }
+.indicator-valor-mean{ fill: var(--mean-bar-color); }  /* un uva we*/
+.indicator-value{
+    fill: var(--marker-color);
+}
+
+.indicadores-box{
+    margin-left: 28%;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    font: 13px sans-serif;
+}

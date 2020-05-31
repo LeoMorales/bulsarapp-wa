@@ -1,0 +1,19 @@
+name: app_env
+
+channels:
+  - chen
+
+dependencies:
+  - python=3.6
+  - flask
+  - flask-pymongo
+  - pip
+  - pip:
+    - flask-bootstrap
+    - flask-mongoengine
+    - flask-login
+    - flask_compress
+
+
+# file to create a new environment with conda:
+# conda env create -f environment.yml

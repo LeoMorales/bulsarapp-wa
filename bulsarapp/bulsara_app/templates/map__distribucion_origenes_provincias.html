@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+    Bulsarapp - Indicadores Argentina por provincia
+
+{% endblock %}
+
+{% block styles %}
+    {{super()}}
+    <!-- Custom CSS styles -->
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/map_general.css')}}">
+
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/sidebar.css')}}">
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/tooltip_help.css')}}">
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/map_table.css')}}">
+
+
+{% endblock %}
+    
+
+ 
+{% block page_content %}
+    <div id="sidebar" class="collapsed">
+        <button class="glyphicon glyphicon-chevron-right" id="closer" title="Close sidebar"></button>
+        <div class="sidebar-content">
+            <!-- <select id="select-key" class="three columns"> -->
+            <div>
+                <h4> Seleccionar cantidad de intervalos del mapa</h4>
+                <select class="custom-select" id="select-intervals">
+                    <option value='9' selected="selected"> 9 </option>
+                    <option value='8'> 8 </option>
+                    <option value='7'> 7 </option>
+                    <option value='6'> 6 </option>
+                    <option value='5'> 5 </option>
+                    <option value='4'> 4 </option>
+                    <option value='3'> 3 </option>
+                    <option value='2'> 2 </option>
+                </select>
+            </div>
+        </div> <!-- ./sidebar-content -->
+    </div>
+    
+
+    <button class="glyphicon glyphicon-cog" id="open-sidebar" title="Open sidebar"></button>
+    
+    <div class="page-header">
+        <h1 id="map-title"> 
+            Distribución origen por provincias argentinas
+        </h1>
+    </div>
+
+    <div class="row">
+        <!-- <select id="select-key" class="three columns"> -->
+        <div class="col-md-12">
+            <select class="custom-select" id="select-key">
+                <!-- se completa dinamicamente -->
+                <!--
+                    <option value='AFRICANO' selected="selected"> Africano </option>
+                    <option value='ALEMAN'> Aleman </option>
+                    ...
+                    <option value='VASCO'> Vasco </option>
+                -->
+            </select>
+        </div>
+        <div class="col-md-12">
+            <!-- Default checked -->
+            <div class="form-check has-tooltip">
+                <input type="checkbox"
+                       class="form-check-input"
+                       id="checkbox-predicted-option" 
+                       value="1"
+                       onclick="APP.activar_predicted(this)" />
+                <label class="form-check-label"
+                       for="checkbox-predicted-option">
+                    Contabilizar etiquetados por modelo 
+                    
+                </label>
+                <span class="tooltiptext">
+                    El modelo identifica y clasifica según las categorías:
+                    <ul>
+                        <li> ITALIANO </li>
+                        <li> ESTE EUROPEO </li>
+                        <li> VASCO </li>
+                        <li> JAPONES </li>
+                        <li> FRANCES </li>
+                        <li> ARABE </li>
+                    </ul>
+                    E incorpora las etiquetas
+                    <ul>
+                        <li> AAR: que agrupa las etiquetas NOA, ANDINO, JUJUY y SUR </li>
+                        <li> GER-ALE: que agrupa GERMÁNICO y ALEMAN </li>
+                    </ul>
+                </span>
+            </div> <!-- ./form-check -->
+        </div> <!-- ./col-md-12 -->
+        
+    </div> <!-- ./row select -->
+
+
+    <div class="row">
+        <div class="col-md-8">
+            <h5></h5>
+            <div id="legend"><!-- Legend container --></div>
+            <div id="map"><!-- Map container --></div>
+        </div>
+
+        <div class="col-md-4">
+
+            <div id="details" class="hidden">
+                <!-- Details container -->
+            </div>
+            <div id="initial" class="detalle-lateral">
+                <h5>Instrucciones</h5>
+                <ul>
+                    <li>Cambie la clave de categorizado utilizando el menú desplegable sobre el mapa.</li>
+                    <li>Seleccione una provincia para observar su detalle.</li>
+                    <li>Scroll sobre el mapa para alejar/agrandar el mapa.</li>
+                    <li>Para información acerca del etiquetado de apellidos consulte la solapa 
+                        <a href="{{ url_for('main.about') }}"  target="_blank">
+                        "Acerca de"</a>.
+                    </li>
+                </ul>
+            </div>
+
+        </div>  <!-- end col-md-4 -->
+
+    </div> <!-- ./row mapa y detalle -->
+
+    <div class="row ">
+        <svg width="100%" height="44">
+            <g class="YlGnBu" transform="translate(20,20)">
+                <rect height="13" x="0" width="73.6111111111111" class="q-too-low-value" style="stroke-width: 1px;stroke:rgb(0,0,0);">
+                </rect>
+                <text x="80" y="12" font-family="Verdana" font-size="14"> De 0 a 9 personas.</text>
+            </g>
+        </svg>
+
+    </div> <!-- end row -->    
+
+
+    <div class="footer">
+        <strong>Data sources</strong>: Los indicadores fueron calculados a partir del padrón electoral del año 2015.
+        La data geográfica se obtuvo del 
+        <a href="https://github.com/Antena/indicadoresEducativosAR/blob/master/argentina-provincias.topojson" target="_blank">
+            sitio de Indicadores educativos de Antena en github
+        </a>.
+    </div>
+
+    <!-- Mustache template, rendered later to show the details of a feature -->
+    <script id="template" type="x-tmpl-mustache">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Resumen </h2>
+                <h3><% origen %></h3>
+                <p>Total: <% total %> (<% porcentaje %>% de la pob. total)</p>
+                
+                <h3>Por provincias (por cantidad)</h3>
+                <table>
+                <% #detalle %>
+                    <tr>
+                      <th><% provincia_nombre %>:</th>
+                      <td> <% cantidad %> </td>
+                    </tr>
+                <% /detalle %>
+                </table>
+
+            </div>
+        </div>
+    </script>
+
+
+    <!-- JS libraries -->
+    <script src="/static/libs/d3/d3.v3.min.js" charset="utf-8"></script>
+    <script src="/static/libs/mustache/mustache.min.js"></script>
+    
+    <!-- Custom JS code -->
+    <script src="/static/js/map_distribucion_origenes_provincias.js"></script>
+    
+
+{% endblock %}
+

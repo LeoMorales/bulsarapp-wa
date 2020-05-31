@@ -1,0 +1,33 @@
+/* Copiamos estilo de las tablas de skeleton: */
+table {
+    font-size: 1.2em;
+    line-height: 1.2;
+    font-weight: 400;
+    font-family: Raleway,HelveticaNeue,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    color: #222;
+    margin-bottom: 0;
+}
+td, th {
+    padding: 6px 9px;
+}
+
+table th {
+    padding-left: 0;
+}
+
+td:last-child, th:last-child {
+    padding-right: 0;
+}
+
+td {
+  text-align: right;
+}
+
+table tr{
+    border-bottom: 1px solid #3a3a3d14;
+}
+
+#indicadoresChart-container {
+    margin-top: 8%;
+    margin-bottom: 10%;
+}

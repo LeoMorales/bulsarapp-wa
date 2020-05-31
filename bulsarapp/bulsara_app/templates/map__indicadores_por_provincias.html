@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+    Bulsarapp - Indicators in Argentina by province
+
+{% endblock %}
+
+{% block styles %}
+    {{super()}}
+    <!-- Custom CSS styles -->
+    <link rel="stylesheet" type="text/css"
+          href="{{url_for('static', filename='css/map_provincias.css')}}">
+
+{% endblock %}
+    
+
+{% block page_content %}
+
+    <div class="page-header">
+        <h1>Isonymyc information for Argentinian provinces</h1>
+    </div>
+
+    <div class="row">
+        <!-- <select id="select-key" class="three columns"> -->
+        <div class="col-md-12">
+            <select class="custom-select" id="select-key">
+                <option value="n" selected="selected">Electorate</option>
+                <option value="s">Number of differents surnames</option>
+                <option value="ins">Isonymy</option>
+                <option value="alfa_fisher">Fisher's alpha</option>
+                <option value="consanguinidad">Inbreeding</option>
+                <option value="a">Index A</option>
+                <option value="b">Index B</option>
+            </select>
+        </div>
+    </div> <!-- ./row -->
+ 
+
+    <div class="row">
+        <div class="col-md-8">
+            <h5></h5>
+            <div id="legend">
+                <!-- Legend container -->
+            </div>
+            <div id="map">
+                <!-- Map container -->
+            </div>
+        </div>
+
+        <div class="col-md-4">
+
+            <div id="details" class="hidden">
+                <!-- Details container -->
+            </div>
+            <div id="initial" class="detalle-lateral">
+                <h5>Instrucciones</h5>
+                <ul>
+                    <li>Change the categorized key using the dropdown menu above the map..</li>
+                    <li>Select a province/distric to observe its detail.</li>
+                    <li>Scroll on the map to zoom-in / zoom-out the map.</li>
+                    <li>For information about the indicators go to the tab
+                        <a href="{{ url_for('main.about') }}"  target="_blank">
+                            "About"
+                        </a>.
+                    </li>
+                </ul>
+            </div>
+
+        </div> <!-- end col (detalle) -->
+
+    </div> <!-- end row  (map) -->
+
+    
+
+    <div class="footer">
+        <strong>Data sources</strong>: The indicators were calculated from the 2015 electoral registry.
+        Geographical information was obtained from the <a href="https://www.ign.gob.ar/" target="_blank">
+            National Geographic Institute of Argentina
+        </a>.
+    </div>
+
+    <!-- Mustache template, rendered later to show the details of a feature -->
+    <script id="template" type="x-tmpl-mustache">
+        <div class="row">
+            <div class="col-md-12">
+                <h3><% provincia_nombre %> </h3>
+                <table>
+                    <tr>
+                      <th>Number of registered:</th>
+                      <td> <% n %> </td>
+                    </tr>
+                    <tr>
+                      <th>Number of surnames:</th>
+                      <td> <% s %></td>
+                    </tr>
+                    <tr>
+                      <th>Isonymy:</th>
+                      <td> <% ins %> </td>
+                    </tr>
+                    <tr>
+                      <th>Inbreeding estimator:</th>
+                      <td> <% consanguinidad %> </td>
+                    </tr>
+                    <tr>
+                      <th>Fisher's alpha:</th>
+                      <td> <% alfa_fisher %>  </td>
+                    </tr>
+                    <tr>
+                      <th>Index A:</th>
+                      <td> <% a %>  </td>
+                    </tr>
+                    <tr>
+                      <th>Index B:</th>
+                      <td> <% b %>  </td>
+                    </tr>
+                </table>
+                
+            </div>
+            <div class="col-md-12" id="indicadoresChart-container">
+                <canvas id="indicadoresChart"></canvas>
+            </div>
+            <div class="col-md-12">
+                <a class="glyphicon glyphicon-remove-circle" href="#" id="close-details" onclick="hideDetails(); return false;"></a>
+            </div>
+        </div>
+    </script>
+
+    <!-- JS libraries -->
+    <script src="/static/libs/chartjs/chart.js@2.8.0.js"></script>
+
+    <script src="/static/libs/d3/d3.v3.min.js" charset="utf-8"></script>
+    <script src="/static/libs/mustache/mustache.min.js"></script>
+
+    <!-- Custom JS code -->
+    <script src="/static/js/map_provincias.js"></script>
+
+
+{% endblock %}
+
