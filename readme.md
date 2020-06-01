@@ -49,9 +49,26 @@ Now go to http://localhost:5000/
 
 > If you have a mongo server running in a different port, you must change the DevelopmentConfig class variable → __DEBUG_PORT = 27018__ in the file _bulsarapp/config.py_
 
+All the data in this repository is mock data.
+
+
+Used tools:
+
+- flask
+- pandas
+- geopandas
+- pymongo
+- scikit-learn
+
+
+- D3
+- MongoDB
 
 
 
+Please feel free to contact me if you have any question/comments at:
+- twitter.com/_leomorales23
+- linkedin.com/in/morales-leo/
 
 
 
