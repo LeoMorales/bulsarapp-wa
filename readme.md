@@ -64,11 +64,29 @@ Used tools:
 - D3
 - MongoDB
 
+# Screenshots
 
+![Login image](https://github.com/LeoMorales/bulsarapp-wa/tree/master/bulsarapp/screenshots/login.png)
+
+
+![Index A image](https://github.com/LeoMorales/bulsarapp-wa/tree/master/bulsarapp/screenshots/indexa.png)
+
+
+![Detail image](https://github.com/LeoMorales/bulsarapp-wa/tree/master/bulsarapp/screenshots/details.png)
+
+
+![Distribution image](https://github.com/LeoMorales/bulsarapp-wa/tree/master/bulsarapp/screenshots/distributions.png)
+
+
+
+
+# Contact
 
 Please feel free to contact me if you have any question/comments at:
-- twitter.com/_leomorales23
-- linkedin.com/in/morales-leo/
+- twitter  -->  /_leomorales23
+- linkedin -->  /morales-leo
+
+
 
 
 
